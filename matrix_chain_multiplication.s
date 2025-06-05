@@ -19,7 +19,7 @@ matrix_chain_multiplication:
 DP:
     # Matrix m
     mul t0 s3 s3 #t0 = n*n
-    slli t0 s4 2 #t0 = n*n*4
+    slli t0 t0 2 #t0 = n*n*4
     
     addi a0 t0 0
     call malloc
@@ -61,7 +61,6 @@ For_starti:
 
     addi s10 s7 0 #s10 = k_idx = i_idx(ini)
     addi t3 s7 -4 #t3 = i-1_idx       
-    addi a1 s8 -4 #a1 = j-1_idx
 For_cutk:
     # (m[i][k]) + (m[k+1][j]) + row[i] col[k] col[j]
     add t4 t1 s10
@@ -93,10 +92,10 @@ For_cutk:
 
     sw t4 0(s9) # m[i*n + j]  = q
     srli t6 s10 2 #t6 = k
-    sw k 0(t5)  # s[i*n + j] = k
+    sw t6 0(t5)  # s[i*n + j] = k
 End_cutk:
     addi s10 s10 4 #k_idx++ 
-    bne s10 a1 For_cutk #if k<j-1
+    bne s10 s8 For_cutk #if k<=j-1
 
 End_starti:
     addi s7 s7 4 #i_idx++
@@ -105,7 +104,7 @@ End_starti:
 
 End_length:
     addi a2 a2 4 #l++ 
-    bne s6 a2 For_length #if i<n
+    bge s6 a2 For_length #if i<n
 
     
 
