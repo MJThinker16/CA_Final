@@ -56,7 +56,7 @@ For_starti:
     mul t1 s7 s3 #t1 = s7*s3 = i_idx*n
     add t2 t1 s8 #t2 =  i*n + j
     add s9 t2 s4 #s9 = &m[i*n + j]    
-    addi t4 zero 0x7FFFFFFF     
+    li t4 0x7FFFFFFF     
     sw t4 0(s9) #m[i*n + j] = 0x777777F  
 
     addi s10 s7 0 #s10 = k_idx = i_idx(ini)
@@ -65,7 +65,7 @@ For_cutk:
     # (m[i][k]) + (m[k+1][j]) + row[i] col[k] col[j]
     add t4 t1 s10
     add t4 s4 t4   # t4 = &(m[i*n + k])
-    add t5 s10 4   # t5 = k+1_idx
+    addi t5 s10 4   # t5 = k+1_idx
     mul t5 t5 s3   # t5 = k+1_idx*n 
     add t5 t5 s8   # t5 = k+1_idx*n  + j_idx
     add t5 s4 t5   # t5 = &(m[k+1][j])
@@ -108,7 +108,7 @@ End_length:
 
     
 
-    // Return to main program after completion (Remember to store the return address at the beginning)
+    # Return to main program after completion (Remember to store the return address at the beginning)
     lw s0 4(sp)
     lw ra 0(sp)
     addi sp sp 8
